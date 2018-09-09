@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>JSD9 - Windows installation instructions</title>
+        <title>JSD12 - Windows installation instructions</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="../css/styles.css">
         <link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
@@ -38,9 +38,9 @@
                 
                 <li><p><strong>Configure Git</strong></p>
                 
-                <p>In order to interact with Git, you'll need to first open the Git Bash utility. A quick way to access this terminal is by right clicking your desktop and choosing "Git Bash".</p>
+                <!-- <p>In order to interact with Git, you'll need to first open the Git Bash utility. A quick way to access this terminal is by right clicking your desktop and choosing "Git Bash".</p> -->
                 
-                <p>Copy and paste the following two commands (separately) into your terminal. Replace the name and email address values with your own.</p>
+                <p>Copy and paste the following two commands (separately) into PowerShell. Replace the name and email address values with your own.</p>
                 
 <pre><code class="bash language-bash">git config --global user.name "YOUR NAME"
 git config --global user.email "YOUR EMAIL ADDRESS"</code></pre>
@@ -65,18 +65,23 @@ git config --global user.email "YOUR EMAIL ADDRESS"</code></pre>
                 Refer to the package installer on Node’s <a href="https://nodejs.org/en/">website</a>. Select the Current version (labeled "Latest Features"). Then just follow the set-up instructions.</p>
 
                 <li><p><strong>Configure Node</strong></p></li>
-                <p>Copy and paste the following command into the Git Bash utility:</p>
-
-                <pre><code>npm get prefix</code></pre>
-
-                <p>Select the path value that's returned from this command, then copy it to the Clipboard (ctrl + C) to use below.</p>
-                <p>Next, copy and paste the following command:</p>
+                <p>Copy and paste the following command into PowerShell, then press Enter:</p>
 
                 <pre><code>notepad ~/.bashrc</code></pre>
 
                 <p>The Notepad application opens, displaying a blank document.</p>
-                
-                <p>Within this document, type <code>export PATH="</code>, then paste the path you copied above in Git Bash, then type <code>/bin:$PATH"</code></p>
+                <p>Return to PowerShell, copy and paste the following command into PowerShell, then press Enter:</p>
+
+                <pre><code>npm get prefix</code></pre>
+
+                <p>Select the path value that's returned from this command, then copy it to the Clipboard (ctrl + C) to use below.</p>
+
+                <p>Return to the Notepad application, then within the document you opened above, do the following:</p>
+                <ul>
+                  <li>Type <code>export PATH="</code></li>
+                  <li>Paste the path you copied above from PowerShell</li>
+                  <li>Type <code>/bin:$PATH"</code></li>
+                </ul>
 
                 <p>Save your changes, then close Notepad.</p>
                 
@@ -87,33 +92,33 @@ git config --global user.email "YOUR EMAIL ADDRESS"</code></pre>
 
             <div class="light-blue-bg container push-top push-bottom">
                                 
-                <h2 id="github">2. Set Up GitHub</h2>
+                <h2 id="github">2. Set Up GitHub Enterprise</h2>
                 
-                <p>We will be using the GitHub service to share some of our code. We will learn
+                <p>We will be using the GitHub Enterprise service to share some of our code. We will learn
                 about the underlying technology of GitHub known as <code>git</code> in the next lesson.</p>
                 
                 <ul>
-                <li>Create an account at http://github.com</li>
+                <li>Log into your account at https://git.generalassemb.ly</li>
                 
-                <li>Follow <a href="https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/">these
+                <li>Follow <a href="https://help.github.com/enterprise/2.14/user/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/">these
                 instructions</a>
                 to create a new <em>SSH Key</em> (a special, very secure, key which allows your
                 laptop access to your github account without having to remember your github
                 password)</li>
                 
-                <li>Add your new SSH Key to GitHub following <a href="https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/">these
+                <li>Add your new SSH Key to GitHub Enterprise following <a href="https://help.github.com/enterprise/2.14/user/articles/adding-a-new-ssh-key-to-your-github-account/">these
                 instructions</a></li>
                 
                 <li>Verify your key works by running the following:</li>
                 </ul>
                 
-                <pre><code class="bash language-bash">ssh git@github.com</code></pre>
+                <pre><code class="bash language-bash">ssh git@git.generalassemb.ly</code></pre>
                 
                 <p>You should see output similar to:</p>
                 
                 <p><code>
-                  Hi &lt;you&gt;! You've successfully authenticated, but GitHub does not provide shell access.
-                  Connection to github.com closed.
+                Hi &lt;you&gt;! You've successfully authenticated, but GitHub does not provide shell access.
+                Connection to git.generalassemb.ly closed.
                 </code></p>
             </div>
 
@@ -146,7 +151,36 @@ git config --global user.email "YOUR EMAIL ADDRESS"</code></pre>
                 <li><p>Students who need to update their installations of npm can run <code>npm install -g npm</code>.</p></li>
                 
                 <li><p>Students with an existing, outdated installation of Node can update their install by following the directions above (i.e., using the package installer).</p></li>
-                </ul>
+
+
+                <li><p>Students experiencing a Permission denied (publickey) error with GitHub Enterprise should following the troubleshooting steps at https://help.github.com/enterprise/2.14/user/articles/error-permission-denied-publickey/.</p></li>
+
+                <li><p>Students with an existing GitHub account that uses SSH should edit the git config file as follows:</p>
+                  <ul>
+                    <li>In your editor, open your home directory, navigate to the <code>.ssh</code> folder, then open the file named <code>config</code> (if this file doesn't exist, go to the terminal, run <code>touch ~/.ssh/config</code>, then open the file in your editor.)</li>
+                    <li>Add a second entry to your file using the following as a template (note that everything after a # is a comment):
+<pre>
+  # my GitHub account
+  Host personal
+    HostName github.com
+    User git
+    AddKeysToAgent yes
+    UseKeychain yes
+    IdentityFile ~/.ssh/id_rsa
+
+  # GA GitHub Enterprise
+  Host GA   
+    HostName git.generalassemb.ly
+    User git
+    AddKeysToAgent yes
+    UseKeychain yes
+    IdentityFile ~/.ssh/id_rsa_ga # this should match the filename you used when saving your new key
+</pre>
+                    </li>
+                    <li>Save your changes</li>
+                  </ul>
+                </li>
+              </ul>
             </div>
         </div>
     </body>
