@@ -1,4 +1,4 @@
-# JS-SF-9 web portal
+# JS-SF-12 web portal
 (forked from [FEWD: Static Webportal](https://github.com/cheshireoctopus/gafewd-portal))
 
 A web portal for assistance teaching [General Assembly's](http://generalassemb.ly) part-time Frontend Web Development (FEWD) course. Can easibly be adapted for JavaScript Development (JSD) or other part-time classes and workshops.
